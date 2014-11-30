@@ -1,0 +1,8 @@
+name: AdminDuty
+main: com.aol.evilmogley.AdminDuty
+version: 1.0
+author: BorisTheTerrible
+
+commands:
+  adminduty:
+    description: Enables/Disables admin duty mode
