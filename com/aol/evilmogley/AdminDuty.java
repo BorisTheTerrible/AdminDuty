@@ -5,7 +5,6 @@
 package com.aol.evilmogley;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.UUID;
 import org.bukkit.command.Command;
@@ -17,13 +16,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
-public class AdminDuty extends JavaPlugin {
-
-    File configFile = new File(getDataFolder(), "config.yml");//Used to check if a config file exists
-    FileConfiguration config = getConfig();//Actually config file referance
+public class AdminDuty extends JavaPlugin
+{
     
     PluginManager pluginManager = getServer().getPluginManager();
     private PermissionManager permissionsManager;//PermissionManager grabbed from PEX
+    FileConfigurationFields config;
 
     ArrayList<UUID> playersOnDuty = new ArrayList<>();//Players on duty have creative and commands
 
@@ -32,14 +30,16 @@ public class AdminDuty extends JavaPlugin {
     @Override
     public void onEnable()
     {
-        if (!configFile.exists())//Creates config if one does not exist
-        {
-            getConfig().options().copyDefaults(true);
-            saveConfig();
-            getLogger().info("Created config file.");
-        }
+        config = new FileConfigurationFields(this);
         
         permissionsManager = PermissionsEx.getPermissionManager();
+        
+        if(permissionsManager == null)
+        {
+            getLogger().severe("PermissionManager is null!");
+            getLogger().severe("PermissionsEx was not loaded before intialization or is not installed!");
+            pluginManager.disablePlugin(this);
+        }
 
     }
     
@@ -67,7 +67,7 @@ public class AdminDuty extends JavaPlugin {
         {
             
         } 
-        else//Gives permissions, adding to playerOnDuty
+        else//Gives permissions, adds to playerOnDuty
         {
             permissionsManager.getUser(player.getUniqueId()).addPermission("essentials.afk");
         }
