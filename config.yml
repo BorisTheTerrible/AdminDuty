@@ -1,2 +1,13 @@
+#Message shown when player enters admin duty#
+enablingDutyMessage: You have entered admin duty mode.
+
+#Message shown when player leaves admin duty#
+disablingDutyMessage: You have left admin duty mode.
+
+#What permissions players get when on duty, these are examples#
+permissionsGivenOnDuty:
+    essentials.afk
+    essentials.nick
+
 #Do not change this!#
-configversion: 16
+configversion: 1

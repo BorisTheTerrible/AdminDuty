@@ -4,12 +4,10 @@
 */
 package com.aol.evilmogley;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.UUID;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,7 +23,7 @@ public class AdminDuty extends JavaPlugin
 
     ArrayList<UUID> playersOnDuty = new ArrayList<>();//Players on duty have creative and commands
 
-    String permission = "adminduty";
+    String adminDutyPermission = "adminduty";
 
     @Override
     public void onEnable()
@@ -57,7 +55,7 @@ public class AdminDuty extends JavaPlugin
 
         Player player = (Player) sender;
 
-        if (!(sender.hasPermission(permission)))//Make sure player has permission to use /adminduty
+        if (!(sender.hasPermission(adminDutyPermission)))//Make sure player has permission to use /adminduty
         {
             sender.sendMessage("You lack permission!");
             return true;
@@ -65,11 +63,21 @@ public class AdminDuty extends JavaPlugin
 
         if (playersOnDuty.contains(player.getUniqueId()))//Take away permissions, removes from playerOnDuty
         {
+            for(String s : config.permissionsGivenOnDuty)
+            {
+                permissionsManager.getUser(player.getUniqueId()).removePermission(s);
+            }
             
+            playersOnDuty.remove(player.getUniqueId());
         } 
         else//Gives permissions, adds to playerOnDuty
         {
-            permissionsManager.getUser(player.getUniqueId()).addPermission("essentials.afk");
+            for(String s : config.permissionsGivenOnDuty)
+            {
+                permissionsManager.getUser(player.getUniqueId()).addPermission(s);
+            }
+            
+            playersOnDuty.add(player.getUniqueId());
         }
 
         return false;
