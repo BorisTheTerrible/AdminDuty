@@ -2,7 +2,7 @@ name: AdminDuty
 main: com.aol.evilmogley.AdminDuty
 version: 1.0
 author: BorisTheTerrible
-loadbefore: [PermissionsEx]
+depend : [PermissionsEx]
 
 commands:
   adminduty:

@@ -2,11 +2,10 @@ package com.aol.evilmogley;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Set;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
-public class FileConfigurationFields {
+public class Configuration {
 
     File configFile;
     FileConfiguration config;
@@ -14,8 +13,9 @@ public class FileConfigurationFields {
     ArrayList<String> permissionsGivenOnDuty = new ArrayList<>();//What permissions players get when on duty
     String enablingDutyMessage;//Message shown when player enters admin duty
     String disablingDutyMessage;//Message shown when player leaves admin duty
+    Boolean verbose;
 
-    public FileConfigurationFields(final Plugin plugin)
+    public Configuration(final Plugin plugin)
     {
         configFile = new File(plugin.getDataFolder(), "config.yml");//Used to check if a config file exists
         config = plugin.getConfig();//Actually config file referance
@@ -27,16 +27,17 @@ public class FileConfigurationFields {
             plugin.getLogger().info("Created config file.");
         }
         
-        Set<String> permissions = config.getConfigurationSection("permissionsGivenOnDuty").getKeys(false);
-
-        for (String s : permissions)//Get permissionGivenOnDuty from config and adds it to plugins permissions referance
-        {
-            permissionsGivenOnDuty.add(s);
-        }
+        permissionsGivenOnDuty = (ArrayList)config.getStringList("permissionsGivenOnDuty");
         
         enablingDutyMessage = config.getString("enablingDutyMessage");
         
         disablingDutyMessage = config.getString("disablingDutyMessage");
-
+        
+        verbose = config.getBoolean("verbose");
+        
+        if(verbose){
+            plugin.getLogger().info("Verbose mode enabled!");
+        }
+        
     }
 }

@@ -6,8 +6,11 @@ disablingDutyMessage: You have left admin duty mode.
 
 #What permissions players get when on duty, these are examples#
 permissionsGivenOnDuty:
-    essentials.afk
-    essentials.nick
+    - essentials.afk
+    - essentials.nick
+    
+#Used for debugging#
+verbose: false
 
 #Do not change this!#
 configversion: 1
