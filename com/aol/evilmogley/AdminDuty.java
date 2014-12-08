@@ -47,16 +47,8 @@ public class AdminDuty extends JavaPlugin implements Listener
         
         for(Player player : getServer().getOnlinePlayers())
         {
-         //Removes permission if player erroneously has permissions for only when he is on duty
          //This is done in case of reload
-            if(player.hasPermission(adminDutyPermission))
-            {
-                for(String s : config.permissionsGivenOnDuty)
-                {
-                    verboseMessage("Removing permission " + s +" for player " + player.getName());
-                    permissionsManager.getUser(player.getUniqueId()).removePermission(s);
-                } 
-            }
+          checkPermissions(player);
         }
 
     }
@@ -64,17 +56,7 @@ public class AdminDuty extends JavaPlugin implements Listener
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event)
     {
-      //Removes permission if player erroneously has permissions for only when he is on duty
-        Player player = event.getPlayer();
-        
-        if(player.hasPermission(adminDutyPermission) && !(playersOnDuty.contains(player.getUniqueId())))
-        {
-           for(String s : config.permissionsGivenOnDuty)
-            {
-                verboseMessage("Removing permission " + s +" for player " + player.getName());
-                permissionsManager.getUser(player.getUniqueId()).removePermission(s);
-            } 
-        }
+        checkPermissions(event.getPlayer());
     }
     
     protected void verboseMessage(String message)
@@ -83,6 +65,29 @@ public class AdminDuty extends JavaPlugin implements Listener
         {
             getLogger().info(message);
         }
+    }
+    
+    private void checkPermissions(Player player)
+    {//Removes permissions if player erroneously has permissions when he is not on duty
+            if(player.hasPermission(adminDutyPermission) && !(playersOnDuty.contains(player.getUniqueId())))
+            {
+               for(String s : config.permissionsGivenOnDuty)
+                {
+                    verboseMessage("Removing permission " + s +" for player " + player.getName());
+                    permissionsManager.getUser(player.getUniqueId()).removePermission(s);
+                } 
+            }
+            
+            if(!(player.hasPermission(adminDutyPermission)) && playersOnDuty.contains(player.getUniqueId()))
+            {//Removes permissions if player does not have permission to be on duty
+               for(String s : config.permissionsGivenOnDuty)
+                {
+                    verboseMessage("Removing permission " + s +" for player " + player.getName());
+                    permissionsManager.getUser(player.getUniqueId()).removePermission(s);
+                }  
+               verboseMessage("You now longer have permission to be on admin duty!");
+               playersOnDuty.remove(player.getUniqueId());
+            }
     }
 
     @Override

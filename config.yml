@@ -1,8 +1,8 @@
 #Message shown when player enters admin duty#
-enablingDutyMessage: You have entered admin duty mode.
+enablingDutyMessage: You have entered admin duty.
 
 #Message shown when player leaves admin duty#
-disablingDutyMessage: You have left admin duty mode.
+disablingDutyMessage: You have left admin duty.
 
 #What permissions players get when on duty, these are examples#
 permissionsGivenOnDuty:
