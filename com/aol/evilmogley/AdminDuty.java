@@ -78,7 +78,7 @@ public class AdminDuty extends JavaPlugin implements Listener
                 } 
             }
             
-            if(!(player.hasPermission(adminDutyPermission)) && playersOnDuty.contains(player.getUniqueId()))
+            if(!(player.hasPermission(adminDutyPermission)))
             {//Removes permissions if player does not have permission to be on duty
                for(String s : config.permissionsGivenOnDuty)
                 {
